@@ -2,9 +2,23 @@ This directory contains data sets used in the examples.
 
 The baseball data has a schema of:
 
-name:chararray, team:chararray, position:bag{t:(p:chararray)}, battting_statistics:map[]
+name:chararray, team:chararray, position:bag{t:(p:chararray)},
+battting_statistics:map[]
 
 The baseball data was obtained at 
 http://download.freebase.com/datadumps/2011-04-14/browse/baseball.tar.bz2
 
 and was found via http://www.infochimps.com/
+
+NYSE_daily data has a schema of:
+
+exchange:chararray, stock_symbol:chararray, date:chararray,
+stock_price_open:float, stock_price_high:float, stock_price_low:float,
+stock_price_close:float, stock_volume:int, stock_price_adj_close:float
+
+The NYSE_dividends data has a schema of
+
+exchange:chararray, stock_symbol:chararray, date:chararray, dividends:float
+
+The NYSE data was obtained at 
+http://www.infochimps.com/datasets/nyse-daily-1970-2010-open-close-high-low-and-volume

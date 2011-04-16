@@ -1,6 +1,7 @@
 This directory contains Pig Latin scripts and code for UDFs used to prepare the
 data for these examples.  
 
+Baseball setup:
 The tomap UDF, used to convert batting statistics into a map, can be compiled
 by doing:
 
@@ -15,3 +16,12 @@ Once you have downloaded the baseball data (see ../data/README for information
 on obtaining the data) you can run
 
 <path>/bin/pig -x local baseball.pig 
+
+NYSE setup:
+The total NYSE data was too large to host and would take too long for convient 
+examples.  So the example data contains only information for ticker symbols
+beginning with 'C' from the year 2009. 
+
+If you would like to load the entire data set into your cluster
+for slightly more realistic testing, the examples should work once you adjust
+the file paths for load and store.  I did not change the schema of the data.
