@@ -1,0 +1,17 @@
+This directory contains Pig Latin scripts and code for UDFs used to prepare the
+data for these examples.  
+
+The tomap UDF, used to convert batting statistics into a map, can be compiled
+by doing:
+
+javac -cp <path>/pig.jar tomap.java
+
+where <path> is the path to a copy of pig.jar.  It can then be placed in the
+jar by doing 
+
+jar -cf udf.jar tomap.class 
+
+Once you have downloaded the baseball data (see ../data/README for information
+on obtaining the data) you can run
+
+<path>/bin/pig -x local baseball.pig 

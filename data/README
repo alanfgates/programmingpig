@@ -1,0 +1,10 @@
+This directory contains data sets used in the examples.
+
+The baseball data has a schema of:
+
+name:chararray, team:chararray, position:bag{t:(p:chararray)}, battting_statistics:map[]
+
+The baseball data was obtained at 
+http://download.freebase.com/datadumps/2011-04-14/browse/baseball.tar.bz2
+
+and was found via http://www.infochimps.com/
