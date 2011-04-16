@@ -10,7 +10,7 @@
 -- License for the specific language governing permissions and limitations
 -- under the License.
 
-dividends = load 'NYSE_dividends' as (exchange, symbol, date, dividend);
-grouped   = group dividends by symbol;
-avg       = foreach grouped generate group, AVERAGE(dividends.dividend);
-store avg into 'average_dividend';
+player     = load 'baseball' as (name:chararray, team:chararray,
+			   pos:bag{t:(p:chararray)}, bat:map[]);
+unintended = foreach player generate bat#'base_on_balls' - bat#'ibbs';
+dump unintended;
