@@ -5,6 +5,11 @@ The baseball data has a schema of:
 name:chararray, team:chararray, position:bag{t:(p:chararray)},
 battting_statistics:map[]
 
+The possible keys in the batting_statistics map are: games, at_bats, hits, runs,
+doubles, triples, home_runs, grand_slams, rbis, base_on_balls, ibbs, strikeouts,
+sacrifice_hits, sacrifice_flies, hit_by_pitch, gdb, batting_average,
+on_base_percentage, and slugging_percentage.
+
 The baseball data was obtained at 
 http://download.freebase.com/datadumps/2011-04-14/browse/baseball.tar.bz2
 
