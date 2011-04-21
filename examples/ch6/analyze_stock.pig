@@ -11,8 +11,13 @@
 -- under the License.
 
 register 'acme.jar';
-define convert com.acme.financial.CurrencyConverter('dollar', 'euro');
-divs      = load 'NYSE_dividends' as (exchange:chararray, symbol:chararray,
-				date:chararray, dividends:float);
-backwards = foreach divs generate convert(dividends);
-dump backwards;
+define analyze com.acme.financial.AnalyzeStock();
+daily    = load 'NYSE_daily' as (exchange:chararray, symbol:chararray,
+			   date:chararray, open:float, high:float, low:float,
+			   close:float, volume:int, adj_close:float);
+grpd     = group daily by symbol;
+analyzed = foreach grpd {
+			sorted = order daily by date;
+			generate group, analyze(sorted);
+};
+dump analyzed;

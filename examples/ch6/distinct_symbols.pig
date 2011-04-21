@@ -10,9 +10,12 @@
 -- License for the specific language governing permissions and limitations
 -- under the License.
 
-register 'acme.jar';
-define convert com.acme.financial.CurrencyConverter('dollar', 'euro');
-divs      = load 'NYSE_dividends' as (exchange:chararray, symbol:chararray,
-				date:chararray, dividends:float);
-backwards = foreach divs generate convert(dividends);
-dump backwards;
+daily    = load 'NYSE_daily' as (exchange, symbol); -- not interested in other fields
+grpd     = group daily by exchange;
+uniqcnt  = foreach grpd {
+		   sym      = daily.symbol;
+		   uniq_sym = distinct sym;
+		   generate group, COUNT(uniq_sym);
+};
+dump uniqcnt;
+

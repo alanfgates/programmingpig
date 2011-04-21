@@ -6,4 +6,5 @@ user defined functions are released under the Apache 2.0 license.
 In this repository you will find the code used to take the data from it source
 and prepare if for the example in the setup directory.  The data directory
 contains the cleansed data, ready for use in the examples.  The examples 
-directory contains the example Pig Latin scripts, divided by chapters.
+directory contains the example Pig Latin scripts, divided by chapters.  The 
+udfs directory contains the UDFs used in the examples.

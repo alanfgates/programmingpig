@@ -1,0 +1,4 @@
+You can build the java udfs by running 'ant' in this directory.  All of the
+example scripts assume that the acme.jar is in the current working directory,
+so you will need to copy the acme.jar to the data directory before running
+the examples.

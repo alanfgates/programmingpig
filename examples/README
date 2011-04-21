@@ -1,0 +1,5 @@
+This directory contains all the examples, divided by chapters.  All of these
+examples assume that the data being read is in the current working directory.
+So if you are running in local mode you will need to start pig in the data
+directory.  If you load the data into your cluster, you will need to place
+the data files in your home directory.

@@ -10,9 +10,8 @@
 -- License for the specific language governing permissions and limitations
 -- under the License.
 
-register 'acme.jar';
-define convert com.acme.financial.CurrencyConverter('dollar', 'euro');
-divs      = load 'NYSE_dividends' as (exchange:chararray, symbol:chararray,
-				date:chararray, dividends:float);
-backwards = foreach divs generate convert(dividends);
-dump backwards;
+players = load 'baseball' as (name:chararray, team:chararray,
+			position:bag{t:(p:chararray)}, bat:map[]);
+pos     = foreach players generate name, flatten(position) as position;
+bypos   = group pos by position;
+dump bypos;
