@@ -1,0 +1,85 @@
+<!--
+   This code is made available under the Apache License, Version 2.0 
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<project name="ProgrammingPig" default="pigunit">
+
+    <!-- source properties -->
+    <property name="src.dir" value="${basedir}/" />
+
+
+    <!-- build properties -->
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="build.classes" value="${build.dir}/classes" />
+
+    <property name="output.jarfile" value="${build.dir}/examplepigunit.jar" />
+
+    <!-- setup the classpath -->
+    <path id="classpath">
+        <fileset file="${pig.dir}/pig.jar" />
+        <fileset file="${pig.dir}/pigunit.jar" />
+        <fileset file="${pig.dir}/build/ivy/lib/Pig/junit-4.5.jar" />
+    </path>
+
+    <!-- ================================================================== -->
+    <!-- Clean.  Delete the build files, and their directories              -->
+    <!-- ================================================================== -->
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${build.dir}" />
+    </target>
+    
+	<!-- ================================================================== -->
+    <!-- Build sources                                                      -->
+    <!-- ================================================================== -->
+    <target name="compile" depends="check-pig, init" description="Compile all artifacts">
+        <javac srcdir="example" includes="**/*.java" destdir="${build.classes}">
+    		<classpath refid="classpath" />
+        </javac>
+    </target>
+
+    <target name="check-pig" unless="pig.dir">
+    	<fail message="'pig.dir' is not defined. 
+		Please pass -Dpig.dir=&lt;base of Pig installation&gt; to Ant on the command-line." />
+    </target>
+
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes}"/>
+		<mkdir dir="${build.dir}/logs"/>
+	</target>
+
+    <!-- ================================================================== -->
+    <!-- Run PigUnit tests                                                  -->
+    <!-- ================================================================== -->
+	<target name="pigunit" depends="compile">
+      <junit printsummary="yes" haltonfailure="no"
+          fork="yes" maxmemory="512m" dir="${basedir}">
+        <classpath>
+          <pathelement location="${build.classes}" />
+          <path refid="classpath"/>
+        </classpath>
+        <formatter type="plain" />
+        <batchtest fork="yes" todir="${build.dir}/logs">
+          <fileset dir=".">
+            <patternset>
+              <include name="**/*.java"/>
+            </patternset>
+          </fileset>
+        </batchtest>
+        <assertions>
+          <enable />
+        </assertions>
+      </junit>
+	</target>
+
+</project>
