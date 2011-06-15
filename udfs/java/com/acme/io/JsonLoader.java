@@ -61,6 +61,13 @@ import org.apache.pig.impl.logicalLayer.FrontendException;
 import org.apache.pig.impl.util.UDFContext;
 import org.apache.pig.impl.util.Utils;
 
+/**
+ * A loader for data stored using {@link JsonStorage}.  This is not a generic
+ * JSON loader.  It depends on the schema being stored with the data when
+ * conceivably you could write a loader that determines the schema from the
+ * JSON.  It is also not well tested, for functionality or performance.  It
+ * works for simple demonstrations.
+ */
 public class JsonLoader extends LoadFunc implements LoadMetadata {
 
     protected RecordReader reader = null;
@@ -178,6 +185,8 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
             throw new IOException(ie);
         }
 
+        // Create a parser specific for this input line.  This may not be the
+        // most efficient approach.
         ByteArrayInputStream bais = new ByteArrayInputStream(val.getBytes());
         JsonParser p = jsonFactory.createJsonParser(bais);
 
@@ -186,8 +195,9 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
         Tuple t = tupleFactory.newTuple(fields.length);
 
         // Read the start object marker.  Throughout this file if the parsing
-        // isn't what we expect we return null, which will discard the record.
-        // That way a few mangled lines don't fail the job.
+        // isn't what we expect we return a tuple with null fields rather than
+        // throwing an exception.  That way a few mangled lines don't fail the
+        // job.
         if (p.nextToken() != JsonToken.START_OBJECT) {
             log.warn("Bad record, could not find start of record " +
                 val.toString());

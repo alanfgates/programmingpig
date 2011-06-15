@@ -52,7 +52,8 @@ import org.apache.pig.impl.util.Utils;
  * TextInputFormat.  Pig tuples are mapped to JSON objects.  Pig bags are
  * mapped to JSON arrays.  Pig maps are also mapped to JSON objects.  Maps are
  * assumed to be string to string.  A schema is stored in a side file to deal
- * with mapping between JSON and Pig types.
+ * with mapping between JSON and Pig types.  This class is not well tested for
+ * functionality or performance.
  */
 public class JsonStorage extends StoreFunc implements StoreMetadata {
 

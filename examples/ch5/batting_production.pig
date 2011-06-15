@@ -10,7 +10,7 @@
 -- License for the specific language governing permissions and limitations
 -- under the License.
 
-register '../examples/ch5/production.py' using jython as bballudfs;
+register 'production.py' using jython as bballudfs;
 players  = load 'baseball' as (name:chararray, team:chararray,
 				pos:bag{t:(p:chararray)}, bat:map[]);
 nonnull  = filter players by bat#'slugging_percentage' is not null and
