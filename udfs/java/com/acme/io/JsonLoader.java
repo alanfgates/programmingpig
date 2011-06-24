@@ -67,6 +67,9 @@ import org.apache.pig.impl.util.Utils;
  * conceivably you could write a loader that determines the schema from the
  * JSON.  It is also not well tested, for functionality or performance.  It
  * works for simple demonstrations.
+ *
+ * Also note that this loader and the associated storage function require a
+ * version of Pig that has PIG-2112 to work with complex data.
  */
 public class JsonLoader extends LoadFunc implements LoadMetadata {
 
@@ -174,12 +177,13 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
      * tuple
      */
     public Tuple getNext() throws IOException {
-        // Read the next key value pair from the record reader.  If it's
-        // finished, return null
         Text val = null;
         try {
+            // Read the next key value pair from the record reader.  If it's
+            // finished, return null
             if (!reader.nextKeyValue()) return null;
 
+            // Get the current value.  We don't use the key.
             val = (Text)reader.getCurrentValue();
         } catch (InterruptedException ie) {
             throw new IOException(ie);
@@ -377,7 +381,7 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
     public ResourceSchema getSchema(String location, Job job)
     throws IOException {
         // Open the file and read the first record
-
+        // Get an HDFS handle.
         FileSystem fs = FileSystem.get(job.getConfiguration());
         DataInputStream in = fs.open(new Path(location + "/_schema"));
         String line = in.readLine();

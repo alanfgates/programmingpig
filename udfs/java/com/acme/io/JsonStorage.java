@@ -54,6 +54,9 @@ import org.apache.pig.impl.util.Utils;
  * assumed to be string to string.  A schema is stored in a side file to deal
  * with mapping between JSON and Pig types.  This class is not well tested for
  * functionality or performance.
+ *
+ * Also note that this store function and the associated loader require a
+ * version of Pig that has PIG-2112 to work with complex data.
  */
 public class JsonStorage extends StoreFunc implements StoreMetadata {
 
@@ -105,12 +108,6 @@ public class JsonStorage extends StoreFunc implements StoreMetadata {
 
     @Override
     public void setStoreLocation(String location, Job job) throws IOException {
-        // By default TextOutputFormat uses tab as a separator between keys
-        // and values.  Change it to empty, so that no values in the JSON data
-        // confuse TextInputFormat when we read the data back.  We set the
-        // value in the job object that will be passed to our MapReduce job.
-        //job.getConfiguration().set("mapred.textoutputformat.separator", "");
-
         // FileOutputFormat has a utility method for setting up the output
         // location.  
         FileOutputFormat.setOutputPath(job, new Path(location));
