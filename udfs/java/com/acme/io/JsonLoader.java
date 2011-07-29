@@ -380,7 +380,7 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
      */
     public ResourceSchema getSchema(String location, Job job)
     throws IOException {
-        // Open the file and read the first record
+        // Open the schema file and read the schema
         // Get an HDFS handle.
         FileSystem fs = FileSystem.get(job.getConfiguration());
         DataInputStream in = fs.open(new Path(location + "/_schema"));
