@@ -11,8 +11,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from org.apache.pig.scripting import *
+from org.apache.pig.scripting import Pig
 
+# explicitly import Pig class
 P = Pig.compile("""
 -- PR(A) = (1-d) + d (PR(T1)/C(T1) + ... + PR(Tn)/C(Tn))
 
