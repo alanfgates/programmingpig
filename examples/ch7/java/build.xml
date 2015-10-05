@@ -12,7 +12,16 @@
    limitations under the License.
 -->
 
-<project name="ProgrammingPig" default="pigunit">
+<project name="ProgrammingPig" default="pigunit" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <condition property="ivy.home" value="${env.IVY_HOME}">
+      <isset property="env.IVY_HOME" />
+    </condition>
+    <property name="ivy.home" value="${user.home}/.ant" />
+    <property name="ivy.jar.dir" value="${ivy.home}/lib" />
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+    <property name="mvnrepo" value="http://repo2.maven.org/maven2"/>
+    <property name="ivy.version" value="2.2.0"/>
 
     <!-- source properties -->
     <property name="src.dir" value="${basedir}/" />
@@ -22,13 +31,21 @@
     <property name="build.dir" value="${basedir}/build" />
     <property name="build.classes" value="${build.dir}/classes" />
 
+    <property name="lib.dir" value="${basedir}/lib" />
+
     <property name="output.jarfile" value="${build.dir}/examplepigunit.jar" />
 
     <!-- setup the classpath -->
     <path id="classpath">
-        <fileset file="${pig.dir}/pig.jar" />
-        <fileset file="${pig.dir}/pigunit.jar" />
-        <fileset file="${pig.dir}/build/ivy/lib/Pig/junit-4.5.jar" />
+        <fileset dir="${pig.dir}">
+            <include name="pig*.jar"/>
+        </fileset>
+        <fileset dir="${pig.dir}/build/ivy/lib/Pig">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
     </path>
 
     <!-- ================================================================== -->
@@ -36,32 +53,33 @@
     <!-- ================================================================== -->
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${build.dir}" />
+        <delete dir="${lib.dir}" />
     </target>
     
-	<!-- ================================================================== -->
+    <!-- ================================================================== -->
     <!-- Build sources                                                      -->
     <!-- ================================================================== -->
-    <target name="compile" depends="check-pig, init" description="Compile all artifacts">
+    <target name="compile" depends="resolve, check-pig, init" description="Compile all artifacts">
         <javac srcdir="example" includes="**/*.java" destdir="${build.classes}">
-    		<classpath refid="classpath" />
+            <classpath refid="classpath" />
         </javac>
     </target>
 
     <target name="check-pig" unless="pig.dir">
-    	<fail message="'pig.dir' is not defined. 
-		Please pass -Dpig.dir=&lt;base of Pig installation&gt; to Ant on the command-line." />
+        <fail message="'pig.dir' is not defined. 
+            Please pass -Dpig.dir=&lt;base of Pig installation&gt; to Ant on the command-line." />
     </target>
 
-	<target name="init">
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.classes}"/>
-		<mkdir dir="${build.dir}/logs"/>
-	</target>
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes}"/>
+        <mkdir dir="${build.dir}/logs"/>
+    </target>
 
     <!-- ================================================================== -->
     <!-- Run PigUnit tests                                                  -->
     <!-- ================================================================== -->
-	<target name="pigunit" depends="compile">
+    <target name="pigunit" depends="compile">
       <junit printsummary="yes" haltonfailure="no"
           fork="yes" maxmemory="512m" dir="${basedir}">
         <classpath>
@@ -80,6 +98,30 @@
           <enable />
         </assertions>
       </junit>
-	</target>
+    </target>
+
+    <target name="download-ivy" unless="offline">
+        <mkdir dir="${ivy.jar.dir}"/>
+        <!-- download Ivy from web site so that it can be used even without any special installation -->
+        <get src="${mvnrepo}/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar"
+            dest="${ivy.jar.file}" usetimestamp="true"/>
+    </target>
+
+    <target name="init-ivy" depends="download-ivy">
+      <!-- try to load ivy here from ivy home, in case the user has not already dropped
+              it into ant's lib dir (note that the latter copy will always take precedence).
+              We will not fail as long as local lib dir exists (it may be empty) and
+              ivy is in at least one of ant's lib dir or the local lib dir. -->
+        <path id="ivy.lib.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    </target>
+
+    <target name="resolve" description="--> retrieve dependencies with ivy" depends="init-ivy">
+        <ivy:retrieve />
+    </target>
 
 </project>

@@ -37,7 +37,7 @@ public class PigUnitExample {
 
         // Specify our expected output.  The format is a string for each line.
         // In this particular case we only expect one line of output.
-        String[] output = { "(0.27305267014925455)" };
+        String[] output = { "(0.27305267014925294)" };
 
         // Run the test and check that the output matches our expectation.
         // The "avgdiv" tells PigUnit what alias to check the output value
@@ -60,7 +60,7 @@ public class PigUnitExample {
             "NYSE\tCIF\t2009-12-09\t0.029",
         };
 
-        String[] output = { "(0.22739999999999996)" };
+        String[] output = { "(0.2274)" };
 
         // Run the example script using the input we constructed
         // rather than loading whatever the load statement says.
@@ -87,6 +87,24 @@ public class PigUnitExample {
     }
 
     @Test
+    public void testOutputAnyOrder() throws ParseException, IOException {
+        String[] script = {
+            "divs   = load '../../../data/NYSE_dividends' as (exchange, symbol, date, dividends);",
+            "dates =  foreach divs generate date;",
+            "filtereddates = filter dates by date matches '2009-01-.*';",
+            "distinctdates = distinct filtereddates;",
+            "store distinctdates into 'distinct_dates';",
+        };
+        test = new PigTest(script);
+
+        String[] output = { "(2009-01-02)","(2009-01-06)","(2009-01-07)","(2009-01-08)","(2009-01-12)","(2009-01-13)",
+            "(2009-01-14)","(2009-01-15)","(2009-01-20)","(2009-01-21)","(2009-01-22)","(2009-01-26)","(2009-01-28)",
+            "(2009-01-29)","(2009-01-30)"};
+        // Since distinct does not define the output order, we shall ignore order when comparing the output
+        test.assertOutputAnyOrder("distinctdates", output);
+    }
+
+    @Test
     public void testWithParams() throws ParseException, IOException {
         // Parameters to be substituted in Pig Latin script before the 
         // test is run.  Format is one string for each parameter,
@@ -97,7 +115,7 @@ public class PigUnitExample {
         };
         test = new PigTest("../pigunitwithparams.pig", params);
 
-        String[] output = { "(0.27305267014925455)" };
+        String[] output = { "(0.27305267014925294)" };
 
         // Test output in stored file against specified result
         test.assertOutput(output);
