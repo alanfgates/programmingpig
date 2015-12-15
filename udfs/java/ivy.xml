@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://www.jayasoft.org/misc/ivy/ivy.xsd">
+  <info organisation="acme.com" module="ProgrammingPig"/>
+  <configurations defaultconfmapping="default">
+    <!--these match the Maven configurations-->
+    <conf name="master" description="contains the artifact but no dependencies"/>
+  </configurations>
+  <dependencies>
+    <dependency org="org.apache.pig" name="pig" rev="0.15.0" conf="master->default">
+        <artifact name="pig" type="jar" m:classifier="h2"/>
+    </dependency>
+    <dependency org="org.apache.hadoop" name="hadoop-common" rev="2.6.0" conf="master->master"/>
+    <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-core" rev="2.6.0" conf="master->master"/>
+  </dependencies>
+</ivy-module>
