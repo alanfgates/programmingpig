@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.3" xmlns:m="http://ant.apache.org/ivy/maven"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://www.jayasoft.org/misc/ivy/ivy.xsd">
+  <info organisation="pig.apache.org" module="PigUnitExample"/>
+  <configurations defaultconfmapping="default">
+    <!--these match the Maven configurations-->
+    <conf name="master" description="contains the artifact but no dependencies"/>
+  </configurations>
+  <dependencies>
+    <dependency org="junit" name="junit" rev="4.5" conf="master->master"/>
+  </dependencies>
+</ivy-module>
