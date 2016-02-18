@@ -61,7 +61,7 @@ class Kmeans {
         // $centroids is the only binding parameter. It will be bound to different parameter with the
         // estimation for centroid from the last round. Then we calculate the average of the new clusters
         // to get the new centroid estimation, and store into "output"
-        def P = Pig.compile("register 'kmeans.groovy' using groovy as util;" +
+        def P = Pig.compile("register './kmeans.groovy' using groovy as util;" +
                             "raw = load 'student.txt' as (name:chararray, age:int, gpa:double);" +
                             "centroided = foreach raw generate gpa, util.findCentroid('\$centroids', gpa) as centroid;" +
                             "grouped = group centroided by centroid;" +
