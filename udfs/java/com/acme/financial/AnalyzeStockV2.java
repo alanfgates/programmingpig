@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.backend.executionengine.ExecException;
@@ -36,7 +35,6 @@ import org.apache.pig.impl.util.UDFContext;
  */
 public class AnalyzeStockV2 extends EvalFunc<Float> {
 
-	Random r = new Random();
     Properties myProperties = null;
 
     @Override
@@ -46,16 +44,16 @@ public class AnalyzeStockV2 extends EvalFunc<Float> {
             myProperties =
                 UDFContext.getUDFContext().getUDFProperties(this.getClass());
         }
-            
-		// Make sure the input isn't null and is of the right size.
-		if (input == null || input.size() != 1) return null;
 
-		DataBag b = (DataBag)input.get(0);
-		for (Tuple t : b) {
-			// Do some magic analysis, using properites from myProperties to
+        // Make sure the input isn't null and is of the right size.
+        if (input == null || input.size() != 1) return null;
+
+        DataBag b = (DataBag)input.get(0);
+        for (Tuple t : b) {
+            // Do some magic analysis, using properites from myProperties to
             // decide how ...
-		}
-		return r.nextFloat() * 100;
+        }
+        return 0f;
     }
 
     @Override

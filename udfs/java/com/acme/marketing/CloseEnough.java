@@ -15,7 +15,6 @@ package com.acme.marketing;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.Random;
 
 import org.apache.pig.FilterFunc;
 import org.apache.pig.data.Tuple;
@@ -26,7 +25,6 @@ import org.apache.pig.data.Tuple;
 public class CloseEnough extends FilterFunc {
 
     int distance;
-    Random r = new Random();
 
     /*
      * @param miles - Distance in miles that two zip codes can be apart and
@@ -41,8 +39,17 @@ public class CloseEnough extends FilterFunc {
         // expect two strings
         String zip1 = (String)input.get(0);
         String zip2 = (String)input.get(1);
-        // do some lookup on zip code tables
-        return r.nextBoolean();
+        if (getDistance(zip1, zip2) <= distance) return true;
+        return false;
+    }
+
+    private int getDistance(String zip1, String zip2) {
+        // do some lookup on zip code tables,
+        // use a fake distance here for simplicity here
+        if (zip1.equals(zip2)) {
+            return 0;
+        }
+        return 100;
     }
 }
 
