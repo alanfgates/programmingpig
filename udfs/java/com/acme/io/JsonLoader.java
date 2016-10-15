@@ -267,7 +267,7 @@ public class JsonLoader extends LoadFunc implements LoadMetadata {
             return p.getText();
 
         case DataType.MAP:
-            // Should be a start of the map object
+            // Should be the start of the map object
             if (p.nextToken() != JsonToken.START_OBJECT) {
                 log.warn("Bad map field, could not find start of object, field "
                     + fieldnum);
