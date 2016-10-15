@@ -9,7 +9,7 @@
     <conf name="master" description="contains the artifact but no dependencies"/>
   </configurations>
   <dependencies>
-    <dependency org="org.apache.pig" name="pig" rev="0.15.0" conf="master->default">
+    <dependency org="org.apache.pig" name="pig" rev="0.16.0" conf="master->default">
         <artifact name="pig" type="jar" m:classifier="h2"/>
     </dependency>
     <dependency org="org.apache.hadoop" name="hadoop-common" rev="2.6.0" conf="master->master"/>
